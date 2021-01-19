@@ -13,7 +13,6 @@ import { ApiService } from "../../core/services/api.service";
 export class  AutoCompleteComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>()
   breweriesACForm: FormGroup;
-  options: string[] = [];
   hasResults = true;
   isLoadingResults = false;
   filteredOptions$: Observable<any[]>;
