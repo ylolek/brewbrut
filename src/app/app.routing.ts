@@ -21,12 +21,10 @@ export const AppRoutes: Routes = [
   },
   {
     path: "404",
-    component: Error404Component,
-    data: { skipRouteLocalization: true }
+    component: Error404Component
   },
   {
     path: "**",
-    data: { skipRouteLocalization: true },
     redirectTo: "404"
   }
 ];
