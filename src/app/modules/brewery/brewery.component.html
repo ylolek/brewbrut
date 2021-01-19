@@ -1,0 +1,22 @@
+<section class="brewery">
+	<div class="loading-shade" *ngIf="isLoadingResults">
+		<mat-spinner></mat-spinner>
+	</div>
+
+	<mat-card *ngFor="let brewery of breweries$ | async" class="brewery-card">
+		<mat-card-header>
+			<mat-card-title>{{ brewery.name }}</mat-card-title>
+			<mat-card-subtitle>{{ brewery.brewery_type }}</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p>{{ brewery.country }}, {{ brewery.state }}, {{ brewery.city }}, {{ brewery.street }}</p>
+			<p>
+				<a mat-button color="primary" *ngIf="!!brewery.website_url" href="{{ brewery.website_url }}"
+					target="_blank">Visit website</a>
+				<a mat-button color="primary" *ngIf="!!brewery.latitude && !!brewery.longitude"
+					href="https://www.google.com/maps/search/{{ brewery.latitude }},{{ brewery.longitude }}"
+					target="_blank">Show on map</a>
+			</p>
+		</mat-card-content>
+	</mat-card>
+</section>

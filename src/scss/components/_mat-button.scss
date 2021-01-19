@@ -1,0 +1,23 @@
+button {
+  &[mat-fab] {
+    position: absolute;
+    top: 50%;
+    color: color(white) !important;
+    background-color: color(light-brown) !important;
+    z-index: 2;
+    transform: translate3d(0, -50%, 0);
+
+    &[disabled] {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    &.prev {
+      left: -25px;
+    }
+
+    &.next {
+      right: -25px;
+    }
+  }
+}

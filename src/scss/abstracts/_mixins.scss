@@ -1,0 +1,8 @@
+// mouse, touch pad
+@mixin on-real-hover() {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+@import "../../../scss/shared";
+
+.breweries {
+  padding: 24px 40px;
+
+  .breweries-container {
+    position: relative;
+    min-height: 100vh;
+  }
+
+  .breweries-table-container {
+    position: relative;
+    overflow: auto;
+    z-index: 1;
+
+    mat-form-field {
+      width: 30%;
+      margin: 12px 0 0 40px;
+    }
+  }
+
+  table {
+    width: 100%;
+
+    tr {
+      &.mat-row {
+        cursor: pointer;
+        transition: background-color 0.25s ease-in-out;
+
+        @include on-real-hover {
+          background-color: color(mid-brown);
+
+          td {
+            color: color(white);
+          }
+        }
+      }
+
+      th,
+      td {
+        border-bottom-color: color(mid-brown);
+        transition: color 0.25s ease-in-out;
+
+        &.mat-column-name {
+          padding-left: 40px;
+          width: 35%;
+        }
+
+        @include media-breakpoint-down(sm) {
+          &.mat-column-type,
+          &.mat-column-city,
+          &.mat-column-state,
+          &.mat-column-country {
+            display: none;
+          }
+        }
+      }
+
+      th {
+        color: color(mid-brown);
+      }
+    }
+  }
+}

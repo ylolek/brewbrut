@@ -1,0 +1,16 @@
+@function color($color-name, $color-variant: null) {
+  @if ($color-variant !=null) {
+    @return map-get(map-get($colors, $color-name), $color-variant);
+  } @else {
+    @return map-get($colors, $color-name);
+  }
+}
+
+$colors: (
+  white: #fff,
+  black: #000,
+  lightish-brown: #f7f0e8,
+  light-brown: #c0a384,
+  mid-brown: #c59b6d,
+  muddy-green: #514f3a
+);

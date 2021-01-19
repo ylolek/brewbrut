@@ -1,0 +1,6 @@
+.brewery {
+  position: relative;
+  padding: 24px 40px;
+  min-height: calc(100vh - 110px - 100px); // - header, footer height
+  z-index: 1;
+}

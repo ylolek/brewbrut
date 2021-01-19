@@ -1,0 +1,29 @@
+@import "../../../../scss/shared";
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  height: 110px;
+  background-color: color(lightish-brown);
+  border-bottom: 2px solid color(mid-brown);
+
+  a {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-right: 10px;
+      width: 32px;
+      height: 32px;
+      font-size: 2rem;
+      color: color(mid-brown);
+    }
+
+    h1 {
+      margin: 0;
+      font-weight: 600;
+      color: color(muddy-green);
+    }
+  }
+}
