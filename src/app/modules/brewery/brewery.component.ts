@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 import { takeUntil, map, delay } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
@@ -17,12 +18,18 @@ export class BreweryComponent implements OnInit, OnDestroy {
   breweryId: number;
   isLoadingResults = true;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {
-    this.breweryId = +this.route.snapshot.params.id;
-    this.store.dispatch(getBreweryDetails({ breweryId: this.breweryId }));
-  }
+  constructor(private route: ActivatedRoute, private router: Router, private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.route.params.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe((params) => {
+      if (!!params.id) {
+        this.breweryId = +params.id;
+        this.store.dispatch(getBreweryDetails({ breweryId: this.breweryId }));
+      }
+    });
+
     this.breweries$ = this.store
       .select(s => s.brews)
       .pipe(
@@ -32,7 +39,12 @@ export class BreweryComponent implements OnInit, OnDestroy {
         delay(0),
         map((brews: any) => {
           this.isLoadingResults = brews.loading;
-          return brews.selected;
+
+          if (!!brews.error && !!brews.error.status) {
+            this.router.navigate(['404']);
+          } else {
+            return brews.selected;
+          }
         }),
         takeUntil(this.destroy$)
       );

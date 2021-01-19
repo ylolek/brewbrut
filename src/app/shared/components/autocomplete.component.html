@@ -1,0 +1,29 @@
+<form class="breweries-ac-form" [formGroup]="breweriesACForm">
+	<mat-form-field>
+		<mat-label>
+		<mat-icon aria-hidden="false" aria-label="">search</mat-icon>
+		Search breweries
+		</mat-label>
+		<input type="text"
+			matInput
+			placeholder="Start typing..."
+			[formControlName]="'query'"
+			[matAutocomplete]="auto">
+		<mat-autocomplete
+			autoActiveFirstOption
+			#auto="matAutocomplete"
+			(optionSelected)='brewerySelected($event)'>
+			<mat-option *ngFor="let option of filteredOptions$ | async" [value]="option.id">
+				{{option.name}}
+			</mat-option>
+
+			<mat-option *ngIf="!hasResults">
+				No breweries found
+			</mat-option>
+		</mat-autocomplete>
+
+		<div class="loading-shade" *ngIf="isLoadingResults">
+			<mat-spinner diameter="20"></mat-spinner>
+		</div>
+	</mat-form-field>
+</form>

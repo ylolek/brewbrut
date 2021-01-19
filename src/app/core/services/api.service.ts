@@ -21,4 +21,8 @@ export class ApiService {
   public getBrewery(breweryId: number): Observable<any> {
     return this.requestService.get("breweries/" + breweryId);
   }
+
+  public autocomplete(query: string): Observable<any> {
+    return this.requestService.get("breweries/autocomplete?query=" + query);
+  }
 }

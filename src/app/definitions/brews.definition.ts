@@ -9,4 +9,5 @@ export interface IBrews {
   maxPage: number;
   sort: string;
   loading: boolean;
+  error: any;
 }

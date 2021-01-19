@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import {
   fetchBreweries,
+  fetchError,
   retrievedBreweries,
   retrievedBrewery,
   showBreweryDetails,
@@ -16,7 +17,8 @@ export const initialState = {
   perPage: 25,
   maxPage: 100,
   sort: "name",
-  loading: true
+  loading: true,
+  error: null
 };
 
 export const breweriesReducer = createReducer(
@@ -26,33 +28,45 @@ export const breweriesReducer = createReducer(
     page,
     perPage: !!perPage ? perPage : state.perPage,
     sort: !!sort ? sort : state.sort,
-    loading: true
+    loading: true,
+    error: null
+  })),
+
+  on(fetchError, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false
   })),
 
   on(retrievedBreweries, (state, { breweries }) => ({
     ...state,
     breweries,
-    loading: false
+    loading: false,
+    error: null
   })),
 
   on(fetchBreweryDetails, state => ({
     ...state,
-    loading: true
+    loading: true,
+    error: null
   })),
 
   on(retrievedBrewery, (state, { brewery }) => ({
     ...state,
     selected: [brewery],
-    loading: false
+    loading: false,
+    error: null
   })),
 
   on(showBreweryDetails, (state, { breweryId }) => ({
     ...state,
-    selected: state.breweries.filter(brewery => brewery.id === breweryId)
+    selected: state.breweries.filter(brewery => brewery.id === breweryId),
+    error: null
   })),
 
   on(breweriesFilter, (state, { filter }) => ({
     ...state,
-    filter
+    filter,
+    error: null
   }))
 );

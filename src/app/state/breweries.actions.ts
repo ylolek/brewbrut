@@ -10,6 +10,11 @@ export const fetchBreweries = createAction(
   }>()
 );
 
+export const fetchError = createAction(
+  "[API] Breweries Load Error",
+  props<{ error: any }>()
+);
+
 export const retrievedBreweries = createAction(
   "[API] retrieved breweries success",
   props<{ breweries: Array<IBrewery> }>()
@@ -39,6 +44,7 @@ export const breweriesFilter = createAction(
   "[Breweries] breweries filter changed",
   props<{ filter: string }>()
 );
+
 
 export const prevPage = createAction("[Breweries] prev page of breweries");
 export const nextPage = createAction("[Breweries] next page of breweries");

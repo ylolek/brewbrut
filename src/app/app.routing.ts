@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Error404Component } from './core/components/error-pages/404/404.component';
 
 export const AppRoutes: Routes = [
   {
@@ -13,5 +14,10 @@ export const AppRoutes: Routes = [
     path: '',
     pathMatch: 'full',
     redirectTo: 'breweries'
+  },
+  {
+    path: '404',
+    component: Error404Component,
+    data: { skipRouteLocalization: true }
   }
 ];
