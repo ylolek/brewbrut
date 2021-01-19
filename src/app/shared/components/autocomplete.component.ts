@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { Observable, Subject } from "rxjs";
 import { debounceTime, map, startWith, takeUntil } from "rxjs/operators";
 import { ApiService } from "../../core/services/api.service";
@@ -10,8 +10,8 @@ import { ApiService } from "../../core/services/api.service";
   templateUrl: "./autocomplete.component.html",
   styleUrls: ["./autocomplete.component.scss"]
 })
-export class  AutoCompleteComponent implements OnInit, OnDestroy {
-  destroy$: Subject<boolean> = new Subject<boolean>()
+export class AutoCompleteComponent implements OnInit, OnDestroy {
+  destroy$: Subject<boolean> = new Subject<boolean>();
   breweriesACForm: FormGroup;
   hasResults = true;
   isLoadingResults = false;
@@ -25,7 +25,7 @@ export class  AutoCompleteComponent implements OnInit, OnDestroy {
     this.isLoadingResults = true;
     this.filteredOptions$ = this.apiService.autocomplete(query).pipe(
       takeUntil(this.destroy$),
-      map((results) => {
+      map(results => {
         this.isLoadingResults = false;
         this.hasResults = !!results.length;
         return results.slice(0, Math.min(results.length, 5));
@@ -34,25 +34,27 @@ export class  AutoCompleteComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private formBuilder : FormBuilder,
+    private formBuilder: FormBuilder,
     private apiService: ApiService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.breweriesACForm = this.formBuilder.group({
-      query: [''],
+      query: [""]
     });
 
-    this.breweriesACForm.valueChanges.pipe(
-      startWith(''),
-      debounceTime(250),
-      takeUntil(this.destroy$),
-    ).subscribe((value) => {
-      if (!!value && !!value.query) {
-        this.fetchResults(value.query.trim());
-      }
-    });
+    this.breweriesACForm.valueChanges
+      .pipe(
+        startWith(""),
+        debounceTime(250),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(value => {
+        if (!!value && !!value.query) {
+          this.fetchResults(value.query.trim());
+        }
+      });
   }
 
   brewerySelected(event): void {
