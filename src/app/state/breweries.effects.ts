@@ -31,7 +31,9 @@ export class BreweriesEffects {
               type: "[API] retrieved breweries success",
               breweries
             })),
-            catchError((error) => of({ type: "[API] Breweries Load Error", error })) // not yet implemented
+            catchError(error =>
+              of({ type: "[API] Breweries Load Error", error })
+            )
           );
       })
     )
@@ -43,7 +45,7 @@ export class BreweriesEffects {
       mergeMap((action: any) => {
         return this.apiService.getBrewery(action.breweryId).pipe(
           map(brewery => ({ type: "[API] retrieved brewey success", brewery })),
-          catchError((error) => of({ type: "[API] Breweries Load Error", error })) // not yet implemented
+          catchError(error => of({ type: "[API] Breweries Load Error", error }))
         );
       })
     )
