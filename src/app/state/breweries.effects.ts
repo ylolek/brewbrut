@@ -9,13 +9,23 @@ import {
   withLatestFrom,
   catchError
 } from "rxjs/operators";
+import {
+  fetchBreweries,
+  retrievedBreweries,
+  fetchBreweryDetails,
+  getBreweryDetails,
+  showBreweryDetails,
+  prevPage,
+  nextPage,
+  fetchError
+} from "./breweries.actions";
 import { ApiService } from "../core/services/api.service";
 
 @Injectable()
 export class BreweriesEffects {
   fetchBreweries$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[API] fetch Breweries"),
+      ofType(fetchBreweries),
       withLatestFrom(this.store),
       mergeMap(([action, s]) => {
         const ACTION = action as any;
@@ -28,12 +38,10 @@ export class BreweriesEffects {
           })
           .pipe(
             map(breweries => ({
-              type: "[API] retrieved breweries success",
+              type: retrievedBreweries.type,
               breweries
             })),
-            catchError(error =>
-              of({ type: "[API] Breweries Load Error", error })
-            )
+            catchError(error => of({ type: fetchError.type, error }))
           );
       })
     )
@@ -41,11 +49,11 @@ export class BreweriesEffects {
 
   fetchBreweryDetails$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[Brewery] fetch brewery details"),
+      ofType(fetchBreweryDetails),
       mergeMap((action: any) => {
         return this.apiService.getBrewery(action.breweryId).pipe(
-          map(brewery => ({ type: "[API] retrieved brewey success", brewery })),
-          catchError(error => of({ type: "[API] Breweries Load Error", error }))
+          map(brewery => ({ type: retrievedBreweries.type, brewery })),
+          catchError(error => of({ type: fetchError.type, error }))
         );
       })
     )
@@ -53,7 +61,7 @@ export class BreweriesEffects {
 
   breweryDetials$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[Brewery] get one brewery details"),
+      ofType(getBreweryDetails),
       switchMap((action: any) => {
         return this.store
           .select((s: any) => s.brews.breweries)
@@ -64,12 +72,12 @@ export class BreweriesEffects {
                 .indexOf(action.breweryId);
               if (breweryIndex !== -1) {
                 return {
-                  type: "[Brewery] show one brewery details",
+                  type: showBreweryDetails.type,
                   breweryId: action.breweryId
                 };
               } else {
                 return {
-                  type: "[Brewery] fetch brewery details",
+                  type: fetchBreweryDetails.type,
                   breweryId: action.breweryId
                 };
               }
@@ -81,24 +89,24 @@ export class BreweriesEffects {
 
   prevPage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[Breweries] prev page of breweries"),
+      ofType(prevPage),
       withLatestFrom(this.store),
       map(([action, s]) => {
         const S = s as any;
         const toPage = Math.max(1, S.brews.page - 1);
-        return { type: "[API] fetch Breweries", page: toPage };
+        return { type: fetchBreweries.type, page: toPage };
       })
     )
   );
 
   nextPage$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[Breweries] next page of breweries"),
+      ofType(nextPage),
       withLatestFrom(this.store),
       map(([action, s]) => {
         const S = s as any;
         const toPage = Math.min(S.brews.maxPage, S.brews.page + 1);
-        return { type: "[API] fetch Breweries", page: toPage };
+        return { type: fetchBreweries.type, page: toPage };
       })
     )
   );
