@@ -11,13 +11,10 @@ import {
 } from "rxjs/operators";
 import {
   fetchBreweries,
-  retrievedBreweries,
   fetchBreweryDetails,
   getBreweryDetails,
-  showBreweryDetails,
   prevPage,
-  nextPage,
-  fetchError
+  nextPage
 } from "./breweries.actions";
 import { ApiService } from "../core/services/api.service";
 
@@ -38,10 +35,12 @@ export class BreweriesEffects {
           })
           .pipe(
             map(breweries => ({
-              type: retrievedBreweries.type,
+              type: "[API] retrieved breweries success",
               breweries
             })),
-            catchError(error => of({ type: fetchError.type, error }))
+            catchError(error =>
+              of({ type: "[API] Breweries Load Error", error })
+            )
           );
       })
     )
@@ -52,8 +51,8 @@ export class BreweriesEffects {
       ofType(fetchBreweryDetails),
       mergeMap((action: any) => {
         return this.apiService.getBrewery(action.breweryId).pipe(
-          map(brewery => ({ type: retrievedBreweries.type, brewery })),
-          catchError(error => of({ type: fetchError.type, error }))
+          map(brewery => ({ type: "[API] retrieved brewey success", brewery })),
+          catchError(error => of({ type: "[API] Breweries Load Error", error }))
         );
       })
     )
@@ -72,12 +71,12 @@ export class BreweriesEffects {
                 .indexOf(action.breweryId);
               if (breweryIndex !== -1) {
                 return {
-                  type: showBreweryDetails.type,
+                  type: "[Brewery] show one brewery details",
                   breweryId: action.breweryId
                 };
               } else {
                 return {
-                  type: fetchBreweryDetails.type,
+                  type: "[Brewery] fetch brewery details",
                   breweryId: action.breweryId
                 };
               }
@@ -94,7 +93,7 @@ export class BreweriesEffects {
       map(([action, s]) => {
         const S = s as any;
         const toPage = Math.max(1, S.brews.page - 1);
-        return { type: fetchBreweries.type, page: toPage };
+        return { type: "[API] fetch Breweries", page: toPage };
       })
     )
   );
@@ -106,7 +105,7 @@ export class BreweriesEffects {
       map(([action, s]) => {
         const S = s as any;
         const toPage = Math.min(S.brews.maxPage, S.brews.page + 1);
-        return { type: fetchBreweries.type, page: toPage };
+        return { type: "[API] fetch Breweries", page: toPage };
       })
     )
   );
